@@ -10,9 +10,15 @@ body {
     margin:0px;
     padding:20px 0;
     width:100%;
+    font-family: sans-serif;
 }
 
 button, input, textarea {
   display: block;
   width: 100%;
+}
+
+h1 {
+  font-size: 12pt;
+  text-align: center;
 }

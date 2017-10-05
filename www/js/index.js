@@ -1,36 +1,51 @@
 const app = {
-    acceptsAllCerts: false,
+  testIndex: -1,
 
-    // Application Constructor
-    initialize: function() {
-        document.getElementById('toggleAllCertsBtn').addEventListener('click', this.onToggleAllCertsBtnClick.bind(this));
-        document.getElementById('getBtn').addEventListener('click', this.onGetBtnClick.bind(this));
-        document.getElementById('patchBtn').addEventListener('click', this.onPatchBtnClick.bind(this));
-        // document.getElementById('urlInput').value = 'http://172.16.29.50:8085/test';
-    },
+  initialize: function() {
+    document.getElementById('nextBtn').addEventListener('click', app.onNextBtnClick);
+  },
 
-    print: function(content) {
-      document.getElementById('resultTextarea').value += '\n' + JSON.stringify(content);
-    },
+  print: function(prefix, content) {
+    const text = '\n' + prefix + ': ' + JSON.stringify(content);
 
-    onGetBtnClick: function() {
-      const url = document.getElementById('urlInput').value;
+    document.getElementById('resultTextarea').value += text;
+  },
 
-      cordova.plugin.http.get(url, {}, {}, data => this.print(data), error => this.print(error));
-    },
+  reject: function(content) {
+    app.print('result - rejected', content);
+  },
 
-    onPatchBtnClick: function() {
-      const url = document.getElementById('urlInput').value;
+  resolve: function(content) {
+    app.print('result - resolved', content);
+  },
 
-      cordova.plugin.http.patch(url, { test: 'testString' }, {}, data => this.print(data), error => this.print(error));
-    },
+  runTest: function(index) {
+    const testDefinition = tests[index];
+    const titleText = app.testIndex + ': ' + testDefinition.description;
+    const resultText = 'expectation - ' + testDefinition.expected;
 
-    onToggleAllCertsBtnClick: function() {
-      const accept = this.acceptsAllCerts = !this.acceptsAllCerts;
+    document.getElementById('resultTextarea').value = resultText;
+    document.getElementById('descriptionLbl').innerText = titleText;
+    testDefinition.func(index);
+  },
 
-      cordova.plugin.http.acceptAllCerts(accept, () => this.print(`${accept ? '' : 'not '}accepting all certs`));
-      cordova.plugin.http.validateDomainName(!accept, () => this.print(`${accept ? 'not ' : ''}validating domain name`));
+  onFinishedAllTests: function() {
+    const titleText = 'No more tests';
+    const resultText = 'You have run all available tests.';
+
+    document.getElementById('resultTextarea').value = resultText;
+    document.getElementById('descriptionLbl').innerText = titleText;
+  },
+
+  onNextBtnClick: function() {
+    app.testIndex += 1;
+
+    if (app.testIndex < tests.length) {
+      app.runTest(app.testIndex);
+    } else {
+      app.onFinishedAllTests();
     }
+  }
 };
 
 app.initialize();
