@@ -34,11 +34,11 @@ script:
   -  export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
 
   # install plugins etc.
-  - cordova prepare
+  - node_modules/.bin/cordova prepare
 
   # build Android and iOS packages
-  - cordova build android
-  - cordova build ios
+  - node_modules/.bin/cordova build android
+  - node_modules/.bin/cordova build ios
 
 after_success:
   # generate documentation
