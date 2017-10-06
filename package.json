@@ -5,14 +5,15 @@
     "description": "A sample Apache Cordova application that demonstrates advanced HTTP plugin.",
     "main": "index.js",
     "scripts": {
-        "test": "mocha test/test.js"
+        "build": "scripts/build.sh",
+        "test": "npm run build && scripts/test.sh"
     },
     "author": "Sefa Ilkimen",
     "license": "Apache-2.0",
     "dependencies": {
         "cordova": "7.0.1",
         "cordova-android": "6.2.3",
-        "cordova-ios": "4.4.0",
+        "cordova-ios": "^4.4.0",
         "cordova-plugin-advanced-http": "1.6.1",
         "cordova-plugin-compat": "1.2.0",
         "cordova-plugin-file": "4.3.3",
