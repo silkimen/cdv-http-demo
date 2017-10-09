@@ -3,7 +3,7 @@ require('./helpers/setup');
 const wd = require('wd');
 const apps = require('./helpers/apps');
 const caps = Object.assign({}, require('./helpers/caps'));
-const servers = require('./helpers/servers');
+const serverConfig = require('./helpers/server');
 const testDefinitions = require('../www/js/test-definitions');
 
 describe('Advanced HTTP', function() {
@@ -13,8 +13,6 @@ describe('Advanced HTTP', function() {
   this.timeout(300000);
 
   before(() => {
-    const serverConfig = servers.local;
-
     driver = wd.promiseChainRemote(serverConfig);
     require('./helpers/logging').configure(driver);
 
@@ -24,15 +22,13 @@ describe('Advanced HTTP', function() {
     return driver.init(desired);
   });
 
-  after(() => {
-    return driver
-      .quit()
-      .finally(function () {
-        if (process.env.npm_package_config_sauce) {
-          return driver.sauceJobStatus(allPassed);
-        }
-      });
-  });
+  after(() => driver
+    .quit()
+    .finally(function () {
+      if (process.env.SAUCE_USERNAME) {
+        return driver.sauceJobStatus(allPassed);
+      }
+    }));
 
   const validateTestIndex = number => driver
     .elementById('descriptionLbl')

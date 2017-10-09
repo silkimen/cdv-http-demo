@@ -1,6 +1,6 @@
 const path = require('path');
 
-if (process.env.saucelabs) {
+if (process.env.SAUCE_USERNAME) {
   exports.iosTestApp = 'http://appium.github.io/appium/assets/TestApp7.1.app.zip';
   exports.androidTestApp = 'http://appium.github.io/appium/assets/ApiDemos-debug.apk';
 } else {
