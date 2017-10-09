@@ -5,7 +5,7 @@ const local = {
 
 const sauce = {
   host: 'ondemand.saucelabs.com',
-  port: 443,
+  port: 80,
   auth: process.env.SAUCE_USERNAME + ":" + process.env.SAUCE_ACCESS_KEY
 };
 
