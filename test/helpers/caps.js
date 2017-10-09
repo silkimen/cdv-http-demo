@@ -8,7 +8,7 @@ const local = {
     autoWebview: true,
     app: undefined // will be set later
   },
-  iosSimulator: {
+  iosEmulator: {
     browserName: '',
     'appium-version': '1.7.1',
     platformName: 'iOS',
@@ -38,7 +38,7 @@ const sauce = {
     autoWebview: true,
     app: undefined // will be set later
   },
-  iosSimulator: {
+  iosEmulator: {
     browserName: '',
     'appium-version': '1.7.1',
     platformName: 'iOS',

@@ -12,23 +12,16 @@ describe('Advanced HTTP', function() {
 
   this.timeout(300000);
 
-  before(() => {
-    driver = wd.promiseChainRemote(serverConfig);
-    require('./helpers/logging').configure(driver);
+  const getCaps = appName => {
+    const isDevice = process.argv.includes('--device');
+    const isAndroid = process.argv.includes('--android');
+    const desiredCaps = caps[(isAndroid ? 'android' : 'ios') + (isDevice ? 'Device' : 'Emulator')];
+    const desiredApp = apps[(isAndroid ? 'android' : 'ios') + appName];
 
-    const desired = caps.iosSimulator;
-    desired.app = apps.iosTestApp;
+    desiredCaps.app = desiredApp;
 
-    return driver.init(desired);
-  });
-
-  after(() => driver
-    .quit()
-    .finally(function () {
-      if (process.env.SAUCE_USERNAME) {
-        return driver.sauceJobStatus(allPassed);
-      }
-    }));
+    return desiredCaps;
+  };
 
   const validateTestIndex = number => driver
     .elementById('descriptionLbl')
@@ -51,6 +44,21 @@ describe('Advanced HTTP', function() {
     .elementById('nextBtn')
     .click()
     .sleep(1000);
+
+  before(() => {
+    driver = wd.promiseChainRemote(serverConfig);
+    require('./helpers/logging').configure(driver);
+
+    return driver.init(getCaps('TestApp'));
+  });
+
+  after(() => driver
+    .quit()
+    .finally(function () {
+      if (process.env.SAUCE_USERNAME) {
+        return driver.sauceJobStatus(allPassed);
+      }
+    }));
 
   testDefinitions.forEach((definition, index) => {
     it(definition.description, function() {
