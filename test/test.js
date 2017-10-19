@@ -5,6 +5,7 @@ const apps = require('./helpers/apps');
 const caps = Object.assign({}, require('./helpers/caps'));
 const serverConfig = require('./helpers/server');
 const testDefinitions = require('../www/js/test-definitions');
+const pkgjson = require('../package.json');
 
 describe('Advanced HTTP', function() {
   let driver;
@@ -18,6 +19,7 @@ describe('Advanced HTTP', function() {
     const desiredCaps = caps[(isAndroid ? 'android' : 'ios') + (isDevice ? 'Device' : 'Emulator')];
     const desiredApp = apps[(isAndroid ? 'android' : 'ios') + appName];
 
+    desiredCaps.name = pkgjson.name;
     desiredCaps.app = desiredApp;
 
     return desiredCaps;
