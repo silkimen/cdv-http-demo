@@ -26,7 +26,7 @@ matrix:
     script:
     - node_modules/.bin/cordova prepare
     - node_modules/.bin/cordova build ios
-    - scripts/upload-artifacts.sh
+    - scripts/upload-artifacts.sh --ios
     - scripts/test.sh --ios --emulator
 
   - name: "Android Build & Test"
@@ -53,5 +53,5 @@ matrix:
     script:
     - node_modules/.bin/cordova prepare
     - node_modules/.bin/cordova build android
-    - scripts/upload-artifacts.sh
+    - scripts/upload-artifacts.sh --android
     - scripts/test.sh --android --emulator
