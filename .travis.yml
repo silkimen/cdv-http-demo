@@ -4,19 +4,19 @@ notifications:
       slack:
         secure: RPpLR38m6W0SYjJdPyDth5yUFfBwMt8B/1CsptyxZLQJRtUlTKKJb4SBwdsO58qmtVsH+B09Nd46haiMgUk+LjvRlZt8nHzOWiz+54t0I5x8YZnHxqAan6HSi9HW1yZAWfFUXmGtXYJrM/s9FI+E/Fcv20DoR5RFzNjV0fHgsXmvHSwycLAtvds6Y/GNXuSqJpY52S6xYrUqSw17+bOKb8+F8uZhLrg0ffVkuJdTvw7MOVq4ATstdrl+BMeIpGBA9/XQsZ2eRvk2ftUUMTOoXRPiIfEhSoF9Cbgew2FRt28p9w2bcbmQX0XAsI7Px5UupZgr0QBLiK9LKSLeGZbRHIkObT+vLLc0WvEPedZaEBHDJn/e4uY96/fnjZKqcE/2Xwn30ZqhqzMP/eVZClm/OtB5EFbLRW/QCzEc/QN/IDPgRmdcsXACjDZacALbXR81TFih+udRabvLtc56gdkp/0wb0qGD4aF/WdB+I+Y4j6VtCBh/ETX31Ea+pR9LhHto0HZMUG0hPDqSztHmv5gtTmtYu+9Bm+puqP53eJ4cyATlX3Zo3MxWWaW92iCZUDNHMOyjdhtajoxVtMR/hbUO1EDZB+bAFUDKQBIuwmYZhKw4Y4MhQGEH03QKWlmBRDqM2JaE/wO2rt79ew3JQHNhBBMTuW1djtTPJj3MrlNK2Bk=
 
+cache:
+  directories:
+    - node_modules
+
+addons:
+  sauce_connect: true
+
 matrix:
   include:
   - name: "iOS Build & Test"
     language: objective-c
     os: osx
     osx_image: xcode10.1
-
-    cache:
-      directories:
-        - node_modules
-
-    addons:
-      sauce_connect: true
 
     before_install:
     - export LANG=en_US.UTF-8
@@ -29,3 +29,27 @@ matrix:
     - node_modules/.bin/cordova build ios
     - scripts/upload-artifacts.sh
     - scripts/test.sh --ios --emulator
+
+  - name: "Android Build & Test"
+    language: android
+
+    android:
+      components:
+        - platform-tools
+        - build-tools-28.0.3
+        - android-27
+        - extra-android-support
+        - extra-android-m2repository
+        - extra-google-m2repository
+
+    before_install:
+    - export LANG=en_US.UTF-8
+
+    install:
+    - npm install
+
+    script:
+    - node_modules/.bin/cordova prepare
+    - node_modules/.bin/cordova build android
+    - scripts/upload-artifacts.sh
+    - scripts/test.sh --android --emulator
